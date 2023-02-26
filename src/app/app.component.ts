@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PasswordStrengthService } from './services/password-strength-service.service';
-
+import { Strength } from './types/strength';
+import { Color } from './types/colors';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,19 +20,21 @@ export class AppComponent {
 
   getPasswordSectionColor(sectionIndex: number): string {
     if (this.password.length === 0) {
-      return 'gray';
+      return Color.GRAY;
     }
     const strength = this.passwordService.calculatePasswordStrength(
       this.password
     );
     if (this.password.length < 8) {
-      return 'red';
-    } else if (strength === 0) {
-      return sectionIndex === 0 ? 'red' : 'gray';
-    } else if (strength === 1) {
-      return sectionIndex === 0 || sectionIndex === 1 ? 'yellow' : 'gray';
+      return Color.RED;
+    } else if (strength === Strength.EASY) {
+      return sectionIndex === Strength.EASY ? Color.YELLOW : Color.GRAY;
+    } else if (strength === Strength.MEDIUM) {
+      return sectionIndex === Strength.EASY || sectionIndex === Strength.MEDIUM
+        ? Color.YELLOW
+        : Color.GRAY;
     } else {
-      return 'green';
+      return Color.GREEN;
     }
   }
 

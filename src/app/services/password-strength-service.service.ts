@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Strength } from '../types/strength';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class PasswordStrengthService {
     const hasSymbols = /[#$-/:-?{-~!"^_`\[\]]/.test(password);
 
     if (hasLetters && hasNumbers && hasSymbols) {
-      return 2;
+      return Strength.HARD;
     }
 
     if (
@@ -24,9 +25,8 @@ export class PasswordStrengthService {
       (hasLetters && hasSymbols) ||
       (hasNumbers && hasSymbols)
     ) {
-      return 1;
+      return Strength.MEDIUM;
     }
-
-    return 0;
+    return Strength.EASY;
   }
 }
